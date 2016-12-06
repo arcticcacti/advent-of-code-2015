@@ -47,22 +47,13 @@ let test1() =
             "))(", -1;
             ")))", -3;
             ")())())", -3; |]
-
-    let runTest (data, expected) =
-        let shouldBe = AdventUtils.printTestResult (sprintf "1 - %s" data) (=)
-        let result = followDirections data
-        result |> shouldBe expected
-    testData |> Seq.iter runTest
+    let test = AdventUtils.testResultIsExpected "1" followDirections
+    testData |> Seq.iter test
 
 let test2() =
     let testData = [| ")", 1; "()())", 5 |]
-    let runTest (data, expected) =
-        let shouldBe = AdventUtils.printTestResult (sprintf "2 - %s" data) (=)
-        let result = basementEntered data
-        result |> shouldBe expected
-    testData |> Seq.iter runTest
-
-
+    let test = AdventUtils.testResultIsExpected "2" basementEntered
+    testData |> Seq.iter test
 
 
 part1()
