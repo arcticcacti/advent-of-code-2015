@@ -18,11 +18,11 @@ let hash key number =
 
 let startsWith prefix = Seq.zip prefix >> Seq.forall (fun (x,y) -> x = y)
 
-/// the lowest integer paired with a key that produces a valid AdventCoin hash
-let mineCoin key =
+/// the lowest integer that pairs with a key to produces a hash with the given prefix
+let mineCoin prefix key =
     let performHash = hash key
     Seq.initInfinite ((+)1)
-    |> Seq.find (performHash >> startsWith "00000")
+    |> Seq.find (performHash >> startsWith prefix)
 
 
 
@@ -32,9 +32,14 @@ let mineCoin key =
 
 let part1() =
     getInput()
-    |> mineCoin
+    |> mineCoin "00000"
     |> printfn "Part 1 - found hash with suffix: %d"
 
+
+let part2() =
+    getInput()
+    |> mineCoin "000000"
+    |> printfn "Part 2 - found hash with suffix: %d"
 
 // Tests
 
@@ -43,11 +48,12 @@ let test1() =
         "abcdef", "609043";
         "pqrstuv", "1048970"
     |]
-    let test = AdventUtils.testResultIsExpected "1" (mineCoin >> string)
+    let test = AdventUtils.testResultIsExpected "1" (mineCoin "00000" >> string)
     testData |> Array.iter test
 
 
 part1()
+part2()
 
 test1()
 1
